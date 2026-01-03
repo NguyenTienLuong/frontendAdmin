@@ -59,7 +59,17 @@ const OrderDetails = ({ order }) => {
             </div>
             <div className="info-row">
               <span className="info-label">Thời gian đặt hàng </span>
-              <span className="info-value">{order.created_at}</span>
+              <span className="info-value">
+                {new Date(order.created_at).toLocaleString("vi-VN", {
+                  timeZone: "Asia/Ho_Chi_Minh",
+                  hour12: false,
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
             <div className="info-row">
               <span className="info-label">Cơ sở </span>

@@ -20,6 +20,7 @@ import {
   CheckCircleOutlined,
   CarOutlined,
   InboxOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 import { useOrder } from "../../context/OrderContext";
 import { fetchWithAuth } from "../../utils/fetchWithAuth";
@@ -248,6 +249,12 @@ const OrderDetailPage = () => {
               </span>
               <b style={{ color: "#ff6b35" }}>{currentOrder.total_money}</b>
             </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>
+                <FormOutlined /> Ghi chú
+              </span>
+              <b style={{ color: "#ff6b35" }}>{currentOrder.note}</b>
+            </div>
           </div>
 
           <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
@@ -387,7 +394,7 @@ const OrderDetailPage = () => {
               style={{ position: "absolute", top: 15, right: 15, fontSize: 15 }}
               className="out-line"
             >
-              <CloseOutlined />
+              <CloseOutlined className="close-icon" />
             </button>
           </div>
         </div>
