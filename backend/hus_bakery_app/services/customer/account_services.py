@@ -13,6 +13,7 @@ from hus_bakery_app.models.order_status import OrderStatus
 from hus_bakery_app.models.products import Product
 from hus_bakery_app.models.feedback import Feedback
 from hus_bakery_app.models.shipper import Shipper
+from hus_bakery_app.models.employee import Employee
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, '..', 'static', 'avatars')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -96,7 +97,8 @@ def change_password(role , id, old_password, new_password, confirm_password):
         user = Shipper.query.get(id)
     elif role == "customer":
         user = Customer.query.get(id)
-
+    elif role =="employee":
+        user = Employee.query.get(id)
     if not user or not user.check_password(old_password):
         return False, "Mật khẩu cũ không chính xác"
     if new_password != confirm_password:
