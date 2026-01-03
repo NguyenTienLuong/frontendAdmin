@@ -3,7 +3,7 @@
 // ===============================================
 import api from "./axiosConfig";
 
-const BASE_PATH = "http://localhost:5001/api/admin/product_management";
+const BASE_PATH = "http://localhost:5001/api/superadmin";
 
 export const productApi = {
   /**
@@ -37,11 +37,11 @@ export const productApi = {
         product_id: p.product_id,
         name: p.name,
 
-        category_id: p.category,
+        category_id: p.category_id,
 
         unit_price: p.unit_price,
 
-        image_url: p.image,
+        image_url: p.image_url,
 
         description: p.description || "",
         rating: p.rating || 0,

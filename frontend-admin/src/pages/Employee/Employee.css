@@ -1,14 +1,14 @@
 /* =============================================== */
 /* Location: src/pages/Employee/Employee.css       */
-/* =============================================== */ 
+/* =============================================== */
 
 /* ================= CONTAINER ================= */
 .employee-container {
   padding: 24px;
   background: #f8f9fa;
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #1e293b;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .role-tab.active::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
@@ -180,8 +180,8 @@
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #FFBD71 0%, #FFDCA2 100%);
-  color: #5D0C0C;
+  background: linear-gradient(135deg, #ffbd71 0%, #ffdca2 100%);
+  color: #5d0c0c;
   box-shadow: 0 4px 12px rgba(255, 189, 113, 0.3);
 }
 
@@ -196,15 +196,16 @@
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1024px) {
-  .search-input, .search-input:focus {
+  .search-input,
+  .search-input:focus {
     width: 200px;
   }
-  
+
   .tabs-action-bar {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .right-actions {
     width: 100%;
     justify-content: flex-start;
@@ -217,21 +218,23 @@
   .employee-container {
     padding: 16px;
   }
-  
+
   .employee-title {
     font-size: 24px;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
-  .search-input, .search-input:focus {
+
+  .search-input,
+  .search-input:focus {
     width: 100%;
   }
-  
-  .export-btn, .add-btn {
+
+  .export-btn,
+  .add-btn {
     flex: 1;
     justify-content: center;
   }
@@ -242,7 +245,9 @@
     flex-direction: column;
   }
 
-  .search-box, .export-btn, .add-btn {
+  .search-box,
+  .export-btn,
+  .add-btn {
     width: 100%;
   }
 }

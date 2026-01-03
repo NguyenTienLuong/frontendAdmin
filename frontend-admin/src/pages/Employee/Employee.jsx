@@ -1,18 +1,18 @@
 // ===============================================
 // Location: src/pages/Employee/Employee.jsx
 // ===============================================
-import React, { useState } from 'react';
-import { Modal, Alert, Button } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { useEmployee } from './useEmployee';
-import { useBranches } from './hooks/useBranches';
-import EmployeeHeader from './components/EmployeeHeader';
-import EmployeeStats from './components/EmployeeStats';
-import EmployeeActionBar from './components/EmployeeActionBar';
-import EmployeeTable from './components/EmployeeTable';
-import EmployeeModal from './components/EmployeeModal';
-import { exportEmployeesToCSV } from './utils/employeeHelpers';
-import './Employee.css';
+import React, { useState } from "react";
+import { Modal, Alert, Button } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useEmployee } from "./useEmployee";
+import { useBranches } from "./hooks/useBranches";
+import EmployeeHeader from "./components/EmployeeHeader";
+import EmployeeStats from "./components/EmployeeStats";
+import EmployeeActionBar from "./components/EmployeeActionBar";
+import EmployeeTable from "./components/EmployeeTable";
+import EmployeeModal from "./components/EmployeeModal";
+import { exportEmployeesToCSV } from "./utils/employeeHelpers";
+import "./Employee.css";
 
 const { confirm } = Modal;
 
@@ -37,32 +37,39 @@ const Employee = () => {
     handleSearchChange,
   } = useEmployee();
 
-  const { branches, loading: loadingBranches, error: branchError, refetch } = useBranches();
+  const {
+    branches,
+    loading: loadingBranches,
+    error: branchError,
+    refetch,
+  } = useBranches();
 
   // LOCAL STATE
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState('add');
+  const [modalMode, setModalMode] = useState("add");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   // HANDLERS - ADD
   const handleAddClick = () => {
     if (branchError || branches.length === 0) {
       Modal.warning({
-        title: 'Chưa thể thêm nhân viên',
-        content: 'Vui lòng đợi tải xong danh sách chi nhánh hoặc thử làm mới trang.',
-        centered: true
+        title: "Chưa thể thêm nhân viên",
+        content:
+          "Vui lòng đợi tải xong danh sách chi nhánh hoặc thử làm mới trang.",
+        centered: true,
       });
       return;
     }
-    
-    setModalMode('add');
+
+    setModalMode("add");
     setSelectedEmployee(null);
     setIsModalOpen(true);
   };
 
   // HANDLERS - EDIT
   const handleEditClick = (employee) => {
-    setModalMode('edit');
+    console.log("EDIT employee:", employee);
+    setModalMode("edit");
     setSelectedEmployee(employee);
     setIsModalOpen(true);
   };
@@ -76,35 +83,35 @@ const Employee = () => {
   // HANDLERS - SAVE
   const handleSaveEmployee = async (employeeData) => {
     let result;
-    
-    if (modalMode === 'add') {
+
+    if (modalMode === "add") {
       // Auto-fill branch_id from context if missing
       if (!employeeData.branch_id && currentBranchId) {
         employeeData.branch_id = currentBranchId;
-        console.log('Auto-fill: branch_id from context:', currentBranchId);
+        console.log("Auto-fill: branch_id from context:", currentBranchId);
       }
-      
+
       if (!employeeData.branch_id) {
         Modal.error({
-          title: 'Thiếu thông tin',
-          content: 'Không xác định được chi nhánh. Vui lòng chọn chi nhánh.',
-          centered: true
+          title: "Thiếu thông tin",
+          content: "Không xác định được chi nhánh. Vui lòng chọn chi nhánh.",
+          centered: true,
         });
         return;
       }
-      
+
       result = await addEmployee(employeeData);
     } else {
       // Keep existing branch_id in edit mode
       const employeeId = selectedEmployee.employee_id || selectedEmployee.id;
       const updateData = {
         ...employeeData,
-        branch_id: selectedEmployee.branch_id
+        branch_id: selectedEmployee.branch_id,
       };
-      
+
       result = await updateEmployee(employeeId, updateData);
     }
-    
+
     if (result?.success) {
       handleCloseModal();
     }
@@ -113,16 +120,16 @@ const Employee = () => {
   // HANDLERS - DELETE
   const handleDelete = (employee) => {
     confirm({
-      title: 'Xác nhận xóa nhân viên',
+      title: "Xác nhận xóa nhân viên",
       icon: <ExclamationCircleOutlined />,
       content: `Bạn có chắc chắn muốn xóa nhân viên "${employee.name}"?`,
-      okText: 'Xóa',
-      okType: 'danger',
-      cancelText: 'Hủy',
+      okText: "Xóa",
+      okType: "danger",
+      cancelText: "Hủy",
       centered: true,
       async onOk() {
         await deleteEmployee(employee.employee_id, employee.name);
-      }
+      },
     });
   };
 
@@ -136,7 +143,7 @@ const Employee = () => {
     current: currentPage,
     pageSize: 10,
     total: filteredEmployees.length,
-    showSizeChanger: false
+    showSizeChanger: false,
   };
 
   const handleTableChange = (pagination) => {
@@ -147,10 +154,7 @@ const Employee = () => {
   return (
     <div className="employee-container">
       {/* Header */}
-      <EmployeeHeader 
-        title={getHeaderTitle()} 
-        subtitle={getHeaderSubtitle()} 
-      />
+      <EmployeeHeader title={getHeaderTitle()} subtitle={getHeaderSubtitle()} />
 
       {/* Error Alert */}
       {branchError && (
@@ -160,7 +164,7 @@ const Employee = () => {
           type="error"
           showIcon
           closable
-          style={{ marginBottom: '16px' }}
+          style={{ marginBottom: "16px" }}
           action={
             <Button size="small" onClick={refetch}>
               Thử lại

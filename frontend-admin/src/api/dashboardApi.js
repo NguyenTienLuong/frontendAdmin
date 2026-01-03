@@ -48,6 +48,7 @@ export const dashboardApi = {
   },
 
   getTotalCustomers: async (month, year) => {
+    console.log("DEBUG getTotalCustomers:", { month, year }); // Thêm dòng này
     try {
       const response = await api.post(
         "http://localhost:5001/api/admin/dashboard/total_customer_of_month",
@@ -56,6 +57,7 @@ export const dashboardApi = {
           params: { month, year },
         }
       );
+      console.log("Response total:", response.data); // Thêm dòng này
       return {
         success: true,
         data: response.data?.total_customers || 0,

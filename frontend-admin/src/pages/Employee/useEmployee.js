@@ -2,10 +2,10 @@
 // Location: src/pages/Employees/useEmployee.js
 // ===============================================
 
-import { useState, useEffect, useMemo } from 'react';
-import { message } from 'antd';
-import { employeeApi } from '../../api/employeeApi';
-import { useAuth } from '../../context/AuthContext';
+import { useState, useEffect, useMemo } from "react";
+import { message } from "antd";
+import { employeeApi } from "../../api/employeeApi";
+import { useAuth } from "../../context/AuthContext";
 
 export const useEmployee = () => {
   // AUTH CONTEXT
@@ -14,15 +14,15 @@ export const useEmployee = () => {
     isSuperAdmin,
     isBranchAdmin,
     isViewingBranch,
-    getCurrentBranch
+    getCurrentBranch,
   } = useAuth();
 
   // STATE
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeRole, setActiveRole] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeRole, setActiveRole] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   // GET CURRENT BRANCH ID
@@ -30,13 +30,13 @@ export const useEmployee = () => {
     const branch = getCurrentBranch();
     const branchId = branch?.id ? parseInt(branch.id, 10) : null;
 
-    console.log('Current viewing branch details:', {
+    console.log("Current viewing branch details:", {
       isSuperAdmin,
       isBranchAdmin,
       isViewingBranch,
       branch,
       branchId,
-      type: typeof branchId
+      type: typeof branchId,
     });
 
     return branchId;
@@ -44,7 +44,7 @@ export const useEmployee = () => {
 
   // FETCH DATA
   useEffect(() => {
-    console.log('Fetching employees for branch_id:', currentBranchId);
+    console.log("Fetching employees for branch_id:", currentBranchId);
     fetchEmployees();
   }, [currentBranchId, statusFilter]);
 
@@ -54,34 +54,34 @@ export const useEmployee = () => {
 
       const options = {};
 
-      if (currentBranchId && typeof currentBranchId === 'number') {
+      if (currentBranchId && typeof currentBranchId === "number") {
         options.branchId = currentBranchId;
-        console.log('Filtering by branch_id:', currentBranchId);
+        console.log("Filtering by branch_id:", currentBranchId);
       } else {
-        console.log('Fetching all employees');
+        console.log("Fetching all employees");
       }
 
-      if (statusFilter !== 'all') {
+      if (statusFilter !== "all") {
         options.status = statusFilter;
       }
 
-      console.log('API call options:', options);
+      console.log("API call options:", options);
       const result = await employeeApi.getAllEmployees(options);
 
       if (result.success) {
-        console.log('Employees fetched count:', result.data.length);
+        console.log("Employees fetched count:", result.data.length);
         if (result.data.length > 0) {
-          console.log('Sample data record:', result.data[0]);
+          console.log("Sample data record:", result.data[0]);
         }
         setEmployees(result.data);
       } else {
-        console.error('Failed to fetch employees:', result.message);
-        message.error(result.message || 'Không thể tải danh sách nhân viên');
+        console.error("Failed to fetch employees:", result.message);
+        message.error(result.message || "Không thể tải danh sách nhân viên");
         setEmployees([]);
       }
     } catch (error) {
-      console.error('Fetch error:', error);
-      message.error('Đã xảy ra lỗi khi tải dữ liệu');
+      console.error("Fetch error:", error);
+      message.error("Đã xảy ra lỗi khi tải dữ liệu");
       setEmployees([]);
     } finally {
       setLoading(false);
@@ -92,25 +92,23 @@ export const useEmployee = () => {
   const filteredEmployees = useMemo(() => {
     let filtered = [...employees];
 
-    if (activeRole !== 'all') {
+    if (activeRole !== "all") {
       const roleMap = {
-        manager: 'Quản lý',
-        baker: 'Thợ làm bánh',
-        sales: 'Bán hàng'
+        manager: "Quản lý",
+        baker: "Thợ làm bánh",
+        sales: "Bán hàng",
       };
-      filtered = filtered.filter(emp => emp.role === roleMap[activeRole]);
+      filtered = filtered.filter((emp) => emp.role === roleMap[activeRole]);
     }
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(emp => {
-        const name = emp.name?.toLowerCase() || '';
-        const email = emp.email?.toLowerCase() || '';
-        const id = emp.employee_id?.toString() || '';
+      filtered = filtered.filter((emp) => {
+        const name = emp.name?.toLowerCase() || "";
+        const email = emp.email?.toLowerCase() || "";
+        const id = emp.employee_id?.toString() || "";
         return (
-          name.includes(query) ||
-          email.includes(query) ||
-          id.includes(query)
+          name.includes(query) || email.includes(query) || id.includes(query)
         );
       });
     }
@@ -122,32 +120,32 @@ export const useEmployee = () => {
   const stats = useMemo(() => {
     return {
       total: employees.length,
-      active: employees.filter(e => e.status === 'Đang làm việc').length,
-      inactive: employees.filter(e => e.status === 'Nghỉ việc').length
+      active: employees.filter((e) => e.status === "Đang làm việc").length,
+      inactive: employees.filter((e) => e.status === "Nghỉ việc").length,
     };
   }, [employees]);
 
   // ROLE COUNT
   const roleCount = (roleId) => {
-    if (roleId === 'all') return employees.length;
+    if (roleId === "all") return employees.length;
 
     const roleMap = {
-      manager: 'Quản lý',
-      baker: 'Thợ làm bánh',
-      sales: 'Bán hàng'
+      manager: "Quản lý",
+      baker: "Thợ làm bánh",
+      sales: "Bán hàng",
     };
 
-    return employees.filter(e => e.role === roleMap[roleId]).length;
+    return employees.filter((e) => e.role === roleMap[roleId]).length;
   };
 
   // CRUD
   const addEmployee = async (employeeData) => {
     try {
-      console.log('Adding employee process:', employeeData);
+      console.log("Adding employee process:", employeeData);
 
       const dataToSubmit = {
         ...employeeData,
-        branch_id: parseInt(employeeData.branch_id, 10)
+        branch_id: parseInt(employeeData.branch_id, 10),
       };
 
       if (isBranchAdmin && currentBranchId) {
@@ -158,57 +156,54 @@ export const useEmployee = () => {
         dataToSubmit.branch_id = dataToSubmit.branch_id || currentBranchId;
       }
 
-      console.log('Data to submit:', dataToSubmit);
+      console.log("Data to submit:", dataToSubmit);
 
       const result = await employeeApi.addEmployee(dataToSubmit);
 
       if (result.success) {
-        message.success(result.message || 'Thêm nhân viên thành công');
+        message.success(result.message || "Thêm nhân viên thành công");
         await fetchEmployees();
         return { success: true };
       } else {
-        message.error(result.message || 'Không thể thêm nhân viên');
+        message.error(result.message || "Không thể thêm nhân viên");
         return { success: false };
       }
     } catch (error) {
-      console.error('Add employee error:', error);
-      message.error('Đã xảy ra lỗi khi thêm nhân viên');
+      console.error("Add employee error:", error);
+      message.error("Đã xảy ra lỗi khi thêm nhân viên");
       return { success: false };
     }
   };
 
   const updateEmployee = async (employeeId, employeeData) => {
     try {
-      console.log('Updating employee process:', employeeId, employeeData);
+      console.log("Updating employee process:", employeeId, employeeData);
 
       const dataToSubmit = {
         ...employeeData,
-        branch_id: parseInt(employeeData.branch_id, 10)
+        branch_id: parseInt(employeeData.branch_id, 10),
       };
 
-      const result = await employeeApi.updateEmployee(
-        employeeId,
-        dataToSubmit
-      );
+      const result = await employeeApi.updateEmployee(employeeId, dataToSubmit);
 
       if (result.success) {
-        message.success(result.message || 'Cập nhật nhân viên thành công');
+        message.success(result.message || "Cập nhật nhân viên thành công");
         await fetchEmployees();
         return { success: true };
       } else {
-        message.error(result.message || 'Không thể cập nhật nhân viên');
+        message.error(result.message || "Không thể cập nhật nhân viên");
         return { success: false };
       }
     } catch (error) {
-      console.error('Update employee error:', error);
-      message.error('Đã xảy ra lỗi khi cập nhật nhân viên');
+      console.error("Update employee error:", error);
+      message.error("Đã xảy ra lỗi khi cập nhật nhân viên");
       return { success: false };
     }
   };
 
   const deleteEmployee = async (employeeId, employeeName) => {
     try {
-      console.log('Deleting employee ID:', employeeId);
+      console.log("Deleting employee ID:", employeeId);
 
       const result = await employeeApi.deleteEmployee(employeeId);
 
@@ -217,12 +212,12 @@ export const useEmployee = () => {
         await fetchEmployees();
         return { success: true };
       } else {
-        message.error(result.message || 'Không thể xóa nhân viên');
+        message.error(result.message || "Không thể xóa nhân viên");
         return { success: false };
       }
     } catch (error) {
-      console.error('Delete employee error:', error);
-      message.error('Đã xảy ra lỗi khi xóa nhân viên');
+      console.error("Delete employee error:", error);
+      message.error("Đã xảy ra lỗi khi xóa nhân viên");
       return { success: false };
     }
   };
@@ -233,7 +228,7 @@ export const useEmployee = () => {
     if (branch) {
       return `Nhân viên - ${branch.name}`;
     }
-    return 'Quản lý nhân viên';
+    return "Quản lý nhân viên";
   };
 
   const getHeaderSubtitle = () => {
@@ -287,6 +282,6 @@ export const useEmployee = () => {
 
     isSuperAdmin,
     isBranchAdmin,
-    currentBranchId
+    currentBranchId,
   };
 };
